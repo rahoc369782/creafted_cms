@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Space</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="../styles/register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <script>
+        let is_pressed = {
+            a: false,
+            b: false,
+            c: false
+        }
+        document.onkeydown = function (e) {
+            if (e.which == 65) {
+                is_pressed["a"] = true
+            }
+        }
+        document.onkeyup = function (e) {
+            console.log(e.which, e.ctrlKey)
+            if (e.which == 66 && is_pressed['a']) {
+                alert("a+b key was pressed");
+            }
+        };
+        window.addEventListener("DOMContentLoaded", (e) => {
+            // Check for session storage
+            let currentStep = sessionStorage.getItem("rg_status");
+            if (currentStep === 'done') {
+                return activate_rg_done()
+            }
+            if (currentStep) {
+                document.querySelector('[register-form]').classList.add('wrapper_form_active')
+                document.querySelectorAll(".active_rg_inputblock").forEach(item => {
+                    item.classList.remove("active_rg_inputblock")
+                })
+                // Enabled previous block in which user drop
+                let enabledBlock = document.querySelector(`[onb-rg-${currentStep}-block]`)
+                if (enabledBlock) {
+                    enabledBlock.classList.add("active_rg_inputblock")
+                }
+            }
+            document.querySelector('[register-form]').classList.add('wrapper_form_active')
+            apply_keypress_event()
+        })
+    </script>
+    <script defer src="../scripts/register.js"></script>
+</head>
+
+<body>
+    <main class="onboarding_content">
+        <div class="wrapper_middle_section">
+            <div register-form class="wrapper_form_section">
+                <div class="input_blocks_flow_container">
+                    <div onb-rg-userid-block class="input_group_block active_rg_inputblock">
+                        <div class="input_block_header">
+                            <div class="header">Let's start your journey...</div>
+                            <span>Just conquere yourself</span>
+                            <!-- <div class="header">Let's check is it you?</div> -->
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input autofocus btn="onb-rg-email-btn" common-input id="onb_email_input" spellcheck="false"
+                                onfocus="disable_wrong_input()" required type="text">
+                            <label>Your Email</label>
+                        </div>
+                        <!-- <div class="form_input input_spacing">
+                            <input autofocus btn="onb-rg-email-btn" common-input id="onb_number_input" spellcheck="false"
+                                placeholder="" required type="text">
+                            <label>Your Number</label>
+                        </div> -->
+                        <div class="rg_opts">
+                            <div class="_opt_block">
+                                <div class="rg_opt_content">Above email should be unique and valid. It is your primary
+                                    source of registration.</div>
+                            </div>
+                        </div>
+                        <div class="form_btn input_spacing">
+                            <button onb-rg-email-btn page=rg-userid-btn onclick="sendOtp(event,'n')" onb-email-btn>Send
+                                OTP</button>
+                        </div>
+                        <div id="onb_login_opt" class="onboarding_content input_spacing">
+                            <span>Already a member <a href="./login.html" id="registrationn_pointer">Login
+                                    here</a></span>
+                        </div>
+
+                    </div>
+
+                    <div onb-rg-otp-block class="input_group_block">
+                        <div class="input_block_header">
+                            <div class="header">Enter OTP sent to</div>
+                            <span>Below mentioned credential</span>
+                            <!-- <div class="header">Let's check is it you?</div> -->
+                        </div>
+                        <div class="wrapper_other_onboardinopt">
+                            <span user-unique-id></span>
+                            <label onclick="openrgBlock(event, 'p')">change</label>
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" placeholder="••••••" btn="onb-rg-otp-btn"
+                                class="input_partitioned" id="rg_otp_value" label="Mobile App Code" common-input
+                                type="number">
+                            <label for="">Sent OTP</label>
+                            <div class="resend_otp_opt">
+                                <span>Resend OTP</span>
+                            </div>
+                        </div>
+                        <div class="form_btn input_spacing">
+                            <button onb-rg-otp-btn onclick="verifyOtp(event,'n')" onb-otp-btn>Verify</button>
+                        </div>
+                    </div>
+                    <div onb-rg-password-block class="input_group_block">
+                        <div class="input_block_header">
+                            <div class="header">Set secure password</div>
+                            <span>For your daily secure login</span>
+                            <!-- <div class="header">Let's check is it you?</div> -->
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" btn="onb-rg-password-btn" id="rg_pass_value"
+                                common-input placeholder="" required type="text">
+                            <label>Set password</label>
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" btn="onb-rg-password-btn" id="rg_conf_pass_value"
+                                common-input placeholder="" required type="password">
+                            <label>Confirm password</label>
+                        </div>
+                        <div class="rg_opts">
+                            <div class="_opt_block">
+                                <div class="rg_opt_content">Set password which is easily memorable and most secured for
+                                    you. <span style="font-weight: 600;">Create with combination of capital characters ,
+                                        special characters ,
+                                        numbers.</span></div>
+                            </div>
+                        </div>
+                        <div class="form_btn input_spacing">
+                            <button onb-rg-password-btn onclick="setPassword(event,'n')" onb-email-btn>Continue</button>
+                        </div>
+                    </div>
+                    <div onb-rg-username-block class="input_group_block">
+                        <div class="input_block_header">
+                            <div class="header">Set unique username</div>
+                            <span>For your unique identity</span>
+                            <!-- <div class="header">Let's check is it you?</div> -->
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" autofocus id="rg_username_value"
+                                btn="onb-rg-username-btn" common-input placeholder="" required type="text">
+                            <label>Set username</label>
+                        </div>
+                        <div class="rg_opts">
+                            <div class="_opt_block">
+                                <div class="rg_opt_content">Set unique username for you. You can't change username once
+                                    it is set. This is
+                                    your <span style="font-weight: 600;">Unique Identity for whole application
+                                        use.</span></div>
+                            </div>
+                        </div>
+                        <div class="form_btn input_spacing">
+                            <button onb-rg-username-btn onclick="setUsername(event,'n')">Continue</button>
+                        </div>
+                    </div>
+                    <div onb-rg-personal-block class="input_group_block">
+                        <div class="input_block_header">
+                            <div class="header">Some personal details</div>
+                            <span>To know you better</span>
+                            <!-- <div class="header">Let's check is it you?</div> -->
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" onblur="check_dob(event)" autofocus
+                                btn="onb-rg-personal-btn" common-input id='rg_dob_value' required placeholder=""
+                                maxlength="10" type="text">
+                            <label>Your DOB</label>
+                        </div>
+                        <!-- <div class="warning_msg">Please enter DOB in DDMMYYYY formate</div> -->
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" btn="onb-rg-personal-btn" required common-input
+                                id="rg_gender_input" placeholder="" type="text">
+                            <label>Your Gender</label>
+                        </div>
+                        <div class="rg_opts">
+                            <div class="_opt_block">
+                                <div class="rg_opt_content">Just need to type <span style="font-weight: 500;">M for Male
+                                        , F for
+                                        Female & O for Others.
+                                    </span></div>
+                            </div>
+                        </div>
+                        <div class="form_input input_spacing">
+                            <input onfocus="disable_wrong_input()" btn="onb-rg-personal-btn" common-input
+                                onb-profession-input placeholder="Your Profession" type="text">
+                        </div>
+                        <div class="input_spacing" id="input_error">
+                            <div input-error-msg></div>
+                        </div>
+                        <div class="form_btn input_spacing">
+                            <button onb-rg-personal-btn onclick="setPersonalinfo(event,'n')">Let's
+                                Go</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrong_input input_spacing">
+                <div class="wrong_input_wrapper">
+                    <span></span>
+                </div>
+            </div>
+            <div onb-rg-done-block>
+                <div class="welcome_content">
+                    <h3 class="account_created">Start new journey of understanding & enjoying each step of your life in
+                        simple way.</h3>
+                    <p class="account_created_content">Your account is created successfully. Just<a
+                            href="./login.html"></a>
+                        Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="common_container disclaimer_position">
+            <div class="disclaimer_container">
+                <span>By continuing you indicate that you agree to space's <a href="#">Terms of Service</a> and <a
+                        href="#">Privacy</a>.</span>
+                <br />
+                <span>© Space, Inc. 2023</span>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

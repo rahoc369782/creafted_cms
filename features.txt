@@ -1,0 +1,39 @@
+Represent each moment of our life.
+Past and present.
+Know the status of our life.
+Who we are and our actions , our thoughts , our mindset.
+
+Nav content : 
+-Logo
+-Home
+-Search
+-Anlytics
+-Settings
+-Updates
+-Guides
+-Profile
+
+Left section : 
+-Timelines
+-Favourites
+-Added by you
+-Shared with you
+
+Respective timline
+Its settings and other options
+
+Right section :
+-Most explored timelines
+-Recent activities
+-Recent tags
+-Recent third party accepts
+-Create moments
+
+
+value adding analytics features:
+1) searching according to dates
+2) searching accrording to tags
+3) flexible searching based both dates and tags
+4) searching for particular user based (only can view his publicly open timelines)
+5) searching for open source timelines (and add in their timelines);
+6) 
